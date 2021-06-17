@@ -1,9 +1,14 @@
 import React from "react";
 import styled from "styled-components";
-import {Button, Grid, Paper} from "@material-ui/core";
-import {RacingMember} from "../RacingMember/RacingMember";
-import {cars} from "../../cars";
+import {Button, Grid} from "@material-ui/core";
+import {AutoCars} from "../CarsTable/AutoCars";
 import {RacingTrack} from "../RacingTrack/RacingTrack";
+import {useDispatch, useSelector} from "react-redux";
+import {actions} from '../../redux/rootReducer'
+import {getCarsSelector, getIsStartedSelector} from "../../redux/rootSelectors";
+import {Auto, CarType, Moto, Trucks} from "../../types/types";
+import {MotoCars} from "../CarsTable/MotoCars";
+import {TrucksCars} from "../CarsTable/TrucksCars";
 
 const Container = styled(Grid)`
   flex-grow: 1;
@@ -21,7 +26,15 @@ const StartButton = styled(Button)`
   }
 `;
 
-export const RacingPage:React.FC = ({ children }) => {
+export const RacingPage:React.FC = () => {
+    const dispatch = useDispatch()
+    const cars = useSelector(getCarsSelector)
+    const isStarted = useSelector(getIsStartedSelector)
+
+    const startRace = () => {
+        dispatch(actions.setRaceState(true))
+    }
+
     return (
         <div>
             <Container container spacing={2}>
@@ -32,17 +45,17 @@ export const RacingPage:React.FC = ({ children }) => {
 
                     <Grid container justify="center" spacing={2}>
                         <Grid item>
-                            <RacingMember items={cars.moto} />
+                            <AutoCars items={cars.filter(car => car.type === CarType.Auto) as Array<Auto>} />
                         </Grid>
                         <Grid item>
-                            <RacingMember items={cars.auto} />
+                            <MotoCars items={cars.filter(car => car.type === CarType.Moto) as Array<Moto>} />
                         </Grid>
                         <Grid item>
-                            <RacingMember items={cars.trucks} />
+                            <TrucksCars items={cars.filter(car => car.type === CarType.Truck) as Array<Trucks>} />
                         </Grid>
                     </Grid>
 
-                    <StartButton variant="contained" size="large" color="primary">
+                    <StartButton variant="contained" size="large" color="primary" onClick={startRace} disabled={isStarted}>
                         Старт
                     </StartButton>
 

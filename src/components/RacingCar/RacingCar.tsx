@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import {Auto, Moto, Trucks} from "../../cars";
+import {Auto, Moto, Trucks} from "../../types/types";
 import {CarProgress} from "./CarProgress";
 
 const Container = styled.div`
@@ -15,14 +15,15 @@ const Number = styled.div`
 
 type Props = {
     car: Auto | Moto | Trucks,
-    number: number
+    number: number,
+    trackLength: number
 }
 
-export const RacingCar:React.FC<Props> = ({ car, number }) => {
+export const RacingCar:React.FC<Props> = ({ car, number, trackLength }) => {
     return (
         <Container>
             <Number>{number}</Number>
-            <CarProgress />
+            <CarProgress car={car} trackLength={trackLength} />
         </Container>
     )
 }

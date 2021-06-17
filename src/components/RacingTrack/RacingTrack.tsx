@@ -1,7 +1,9 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import styled from "styled-components";
-import {Auto, cars, Moto, Trucks} from "../../cars";
 import {RacingCar} from "../RacingCar/RacingCar";
+import {useDispatch, useSelector} from "react-redux";
+import {getCarsSelector, getTrackLengthSelector} from "../../redux/rootSelectors";
+import {actions} from '../../redux/rootReducer'
 
 const Container = styled.div`
   width: 80%;
@@ -13,8 +15,20 @@ const Title = styled.h2`
 `;
 
 export const RacingTrack:React.FC = () => {
-    const [allCars, setAllCars] = useState([...cars.moto.racers, ...cars.auto.racers, ...cars.trucks.racers])
+    const [raceFinished, setRaceFinished] = useState(false)
+    const allCars = useSelector(getCarsSelector)
+    const trackLength = useSelector(getTrackLengthSelector)
+    const dispatch = useDispatch();
 
+    useEffect(() => {
+        allCars && setRaceFinished(allCars.every((element) => {
+            return element.isFinished
+        }))
+    }, [allCars])
+
+    useEffect(() => {
+        raceFinished && dispatch(actions.setRaceState(false))
+    }, [raceFinished])
 
     return (
         <Container>
@@ -23,8 +37,9 @@ export const RacingTrack:React.FC = () => {
             </Title>
 
             {allCars.map((car, index) =>
-                <RacingCar car={car} number={index + 1} />
+                <RacingCar key={car.id} car={car} number={index + 1} trackLength={trackLength} />
             )}
+
         </Container>
     )
 }
