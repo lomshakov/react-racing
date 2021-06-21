@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import {Paper} from "@material-ui/core";
-import {Trucks} from "../../types/types";
+import {Truck} from "../../types/types";
 import LocalShippingIcon from "@material-ui/icons/LocalShipping";
 
 const Container = styled(Paper)`
@@ -29,7 +29,7 @@ const IconTrucks = styled(LocalShippingIcon)`
 `;
 
 type Props = {
-    items:  Array<Trucks>
+    items:  Array<Truck>
 }
 
 export const TrucksCars:React.FC<Props> = ({ items }) => {

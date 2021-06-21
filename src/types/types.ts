@@ -1,29 +1,22 @@
-export type Cars = Array<Moto | Auto | Trucks>
-
-export type Moto = {
-    id: string,
-    type: CarType,
-    speed: number,
-    punctureWheel: number,
-    hasStroller: boolean,
-    isFinished: boolean
+export interface Truck extends Transport {
+    type: CarType.Truck;
+    cargoWeight: number;
 }
 
-export type Auto = {
-    id: string,
-    type: CarType,
-    speed: number,
-    punctureWheel: number,
-    passengerCount: number,
-    isFinished: boolean
+export interface Moto extends Transport {
+    type: CarType.Moto;
+    hasStroller: boolean;
 }
 
-export type Trucks = {
+export interface Auto extends Transport {
+    type: CarType.Auto;
+    passengerCount: number;
+}
+
+interface Transport {
     id: string,
-    type: CarType,
     speed: number,
     punctureWheel: number,
-    cargoWeight: number,
     isFinished: boolean
 }
 

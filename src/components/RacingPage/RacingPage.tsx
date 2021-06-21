@@ -6,7 +6,7 @@ import {RacingTrack} from "../RacingTrack/RacingTrack";
 import {useDispatch, useSelector} from "react-redux";
 import {actions} from '../../redux/rootReducer'
 import {getCarsSelector, getIsStartedSelector, getTrackLengthSelector} from "../../redux/rootSelectors";
-import {Auto, CarType, Moto, Trucks} from "../../types/types";
+import {Auto, CarType, Moto, Truck} from "../../types/types";
 import {MotoCars} from "../CarsTable/MotoCars";
 import {TrucksCars} from "../CarsTable/TrucksCars";
 import {useHistory} from "react-router-dom";
@@ -74,7 +74,7 @@ export const RacingPage:React.FC = () => {
                             <MotoCars items={cars.filter(car => car.type === CarType.Moto) as Array<Moto>} />
                         </Grid>
                         <Grid item>
-                            <TrucksCars items={cars.filter(car => car.type === CarType.Truck) as Array<Trucks>} />
+                            <TrucksCars items={cars.filter(car => car.type === CarType.Truck) as Array<Truck>} />
                         </Grid>
                     </Grid>
 

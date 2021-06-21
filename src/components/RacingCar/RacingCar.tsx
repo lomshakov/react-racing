@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import {Auto, Moto, Trucks} from "../../types/types";
+import {Auto, Moto, Truck} from "../../types/types";
 import {CarProgress} from "./CarProgress";
 import {IconMember} from "../common/IconMember";
 
@@ -18,7 +18,7 @@ const Number = styled.div`
 `;
 
 type Props = {
-    car: Auto | Moto | Trucks,
+    car: Auto | Moto | Truck,
     number: number,
     trackLength: number
 }

@@ -4,7 +4,7 @@ import styled from "styled-components";
 import {useDispatch, useSelector} from "react-redux";
 import {getIsStartedSelector} from "../../redux/rootSelectors";
 import {useInterval} from "../../hooks/useInterval";
-import {Auto, Moto, Trucks} from "../../types/types";
+import {Auto, Moto, Truck} from "../../types/types";
 import {actions} from '../../redux/rootReducer';
 
 const Progress = styled.div`
@@ -21,7 +21,7 @@ const LengthCount = styled.div`
 `;
 
 type Props = {
-    car: Auto | Moto | Trucks,
+    car: Auto | Moto | Truck,
     trackLength: number,
     number: number
 }

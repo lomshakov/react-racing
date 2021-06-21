@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import { useHistory } from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import styled from "styled-components";
 import {Button} from "@material-ui/core";
 import {RacingCar} from "../RacingCar/RacingCar";

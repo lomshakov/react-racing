@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import Select from "react-select";
 import {Controller, SubmitHandler, useForm} from "react-hook-form";
-import {Auto, CarType, Moto, Trucks} from "../../types/types";
+import {Auto, CarType, Moto, Truck} from "../../types/types";
 import {Button, Checkbox, FormControlLabel, TextField} from "@material-ui/core";
 import styled from "styled-components";
 import {v4 as uuidv4} from 'uuid'
@@ -15,7 +15,7 @@ const Form = styled.form`
   max-width: 50%;
 `;
 
-const carCreator = (data: IFormInput, type: CarType.Auto | CarType.Moto | CarType.Truck): Auto | Moto | Trucks | undefined => {
+const carCreator = (data: IFormInput, type: CarType.Auto | CarType.Moto | CarType.Truck): Auto | Moto | Truck | undefined => {
     if (type === CarType.Auto) {
         return {
             id: uuidv4(),
