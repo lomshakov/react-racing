@@ -1,9 +1,11 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
+import {Button} from "@material-ui/core";
 import {RacingCar} from "../RacingCar/RacingCar";
 import {useDispatch, useSelector} from "react-redux";
-import {getCarsSelector, getTrackLengthSelector} from "../../redux/rootSelectors";
-import {actions} from '../../redux/rootReducer'
+import {getCarsSelector, getIsFinishedSelector, getTrackLengthSelector} from "../../redux/rootSelectors";
+import {actions} from '../../redux/rootReducer';
 
 const Container = styled.div`
   width: 80%;
@@ -14,32 +16,46 @@ const Title = styled.h2`
   font-size: 24px;
 `;
 
+const ResultButton = styled(Button)`
+  && {
+    margin-top: 20px;
+  }
+`;
+
 export const RacingTrack:React.FC = () => {
-    const [raceFinished, setRaceFinished] = useState(false)
-    const allCars = useSelector(getCarsSelector)
-    const trackLength = useSelector(getTrackLengthSelector)
     const dispatch = useDispatch();
+    const history = useHistory();
+    const allCars = useSelector(getCarsSelector);
+    const trackLength = useSelector(getTrackLengthSelector);
+    const isFinished = useSelector(getIsFinishedSelector);
 
     useEffect(() => {
-        allCars && setRaceFinished(allCars.every((element) => {
+        const allCarsFinished = allCars.every((element) => {
             return element.isFinished
-        }))
-    }, [allCars])
+        })
+        allCars && allCarsFinished && dispatch(actions.setFinishState(allCarsFinished))
+    }, [allCars, dispatch])
 
     useEffect(() => {
-        raceFinished && dispatch(actions.setRaceState(false))
-    }, [raceFinished])
+        isFinished && dispatch(actions.setRaceState(false))
+    }, [isFinished, dispatch])
+
+    const openResult = () => {
+        history.push('/result')
+    }
 
     return (
         <Container>
-            <Title>
-                Гоночный трек
-            </Title>
+            <Title>Гоночный трек</Title>
 
             {allCars.map((car, index) =>
                 <RacingCar key={car.id} car={car} number={index + 1} trackLength={trackLength} />
             )}
 
+            {isFinished &&
+                <ResultButton variant="outlined" size="large" onClick={openResult}>
+                    Результат заезда
+                </ResultButton>}
         </Container>
     )
 }

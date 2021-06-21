@@ -1,14 +1,15 @@
-import React from "react";
+import React, {useState} from "react";
 import styled from "styled-components";
-import {Button, Grid} from "@material-ui/core";
+import {Button, Grid, TextField} from "@material-ui/core";
 import {AutoCars} from "../CarsTable/AutoCars";
 import {RacingTrack} from "../RacingTrack/RacingTrack";
 import {useDispatch, useSelector} from "react-redux";
 import {actions} from '../../redux/rootReducer'
-import {getCarsSelector, getIsStartedSelector} from "../../redux/rootSelectors";
+import {getCarsSelector, getIsStartedSelector, getTrackLengthSelector} from "../../redux/rootSelectors";
 import {Auto, CarType, Moto, Trucks} from "../../types/types";
 import {MotoCars} from "../CarsTable/MotoCars";
 import {TrucksCars} from "../CarsTable/TrucksCars";
+import {useHistory} from "react-router-dom";
 
 const Container = styled(Grid)`
   flex-grow: 1;
@@ -20,19 +21,41 @@ const Title = styled.h2`
   font-size: 36px;
 `;
 
-const StartButton = styled(Button)`
-  && {
-    margin-top: 30px;
-  }
+const SettingsBlock = styled.div`
+  margin: 20px 0;
+`;
+
+const Form = styled.form`
+  display: inline-block;
+  margin-left: 30px;
 `;
 
 export const RacingPage:React.FC = () => {
-    const dispatch = useDispatch()
-    const cars = useSelector(getCarsSelector)
-    const isStarted = useSelector(getIsStartedSelector)
+    const [raceLength, setRaceLength] = useState(0);
+    const dispatch = useDispatch();
+    let history = useHistory();
+    const cars = useSelector(getCarsSelector);
+    const isStarted = useSelector(getIsStartedSelector);
+    const length = useSelector(getTrackLengthSelector);
 
     const startRace = () => {
-        dispatch(actions.setRaceState(true))
+        dispatch(actions.setRaceState(true));
+        dispatch(actions.setFinishState(false));
+        dispatch(actions.setIsFinishedToAllCars(false));
+        dispatch(actions.setClearResults());
+    }
+
+    const handleChange = (e: React.FormEvent<EventTarget>) => {
+        let target = e.target as HTMLInputElement;
+        setRaceLength(Number(target.value));
+    }
+
+    const setLength = () => {
+        dispatch(actions.setRaceLength(raceLength));
+    }
+
+    const openSettings = () => {
+        history.push('/settings')
     }
 
     return (
@@ -55,9 +78,24 @@ export const RacingPage:React.FC = () => {
                         </Grid>
                     </Grid>
 
-                    <StartButton variant="contained" size="large" color="primary" onClick={startRace} disabled={isStarted}>
+                    <SettingsBlock>
+                        <Button variant="contained" size="medium" color="secondary" onClick={openSettings}>Настройка</Button>
+                        <Form noValidate autoComplete="off">
+                            <TextField
+                                label="Длина трека"
+                                id="filled-size-small"
+                                defaultValue={length}
+                                onInput={handleChange}
+                                size="small"
+                            />
+                            <Button variant="contained" size="medium" color="primary" onClick={setLength}>ОК</Button>
+                        </Form>
+                    </SettingsBlock>
+
+
+                    <Button variant="contained" size="large" color="primary" onClick={startRace} disabled={isStarted}>
                         Старт
-                    </StartButton>
+                    </Button>
 
                     <RacingTrack />
 

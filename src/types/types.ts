@@ -28,7 +28,13 @@ export type Trucks = {
 }
 
 export enum CarType {
-    Moto,
-    Auto,
-    Truck
+    Moto = "Мотоцикл",
+    Auto = "Легковой автомобиль",
+    Truck = "Грузовой автомобиль"
+}
+
+export type Result = {
+    indexNumber: number,
+    type: CarType,
+    time: number
 }

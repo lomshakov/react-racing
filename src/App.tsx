@@ -8,13 +8,17 @@ import NormalRoute from "./routes/NormalRoute";
 import {Layout} from "./components/common/Layout";
 import {RacingPage} from "./components/RacingPage/RacingPage";
 import store from "./redux/store";
+import {ResultPage} from "./components/ResultPage/ResultPage";
+import {SettingsPage} from "./components/SettingsPage/SettingsPage";
 
 function App() {
     return (
         <Provider store={store}>
             <Router>
                 <Switch>
-                    <NormalRoute path="/" layout={Layout} component={RacingPage}/>
+                    <NormalRoute path="/result" layout={Layout} component={ResultPage}/>
+                    <NormalRoute path="/settings" layout={Layout} component={SettingsPage}/>
+                    <NormalRoute exact path="/" layout={Layout} component={RacingPage}/>
                 </Switch>
             </Router>
         </Provider>
