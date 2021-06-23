@@ -1,6 +1,7 @@
 // initial state
 import {Auto, CarType, Moto, Result, Truck} from "../types/types";
 import {v4 as uuidv4} from 'uuid'
+import {BaseThunkType} from "./store";
 
 let initialState = {
     isStarted: false as boolean,
@@ -107,6 +108,7 @@ type InferActionsType<T> = T extends { [keys:string]: (...args: any[]) => infer 
 
 type InitialStateType = typeof initialState
 type ActionsTypes = InferActionsType<typeof actions>
+type ThunkType = BaseThunkType<ActionsTypes>
 
 // actions
 export const actions = {
@@ -118,6 +120,23 @@ export const actions = {
     setClearResults: () => ({ type: 'CLEAR_RESULTS' } as const),
     setRaceLength: (length: number) => ({ type: 'SET_RACE_LENGTH', payload: length } as const),
     addNewCar: (car: Auto | Moto | Truck) => ({ type: 'ADD_NEW_CAR', payload: car } as const),
+}
+
+// Thunks
+export const startRace = (): ThunkType => (dispatch) => {
+    dispatch(actions.setRaceState(true));
+    dispatch(actions.setFinishState(false));
+    dispatch(actions.setIsFinishedToAllCars(false));
+    dispatch(actions.setClearResults());
+}
+
+export const finishCar = (car: Auto | Moto | Truck, indexNumber: number, time: number): ThunkType => (dispatch) => {
+    dispatch(actions.setCarIsFinished(car.id));
+    dispatch(actions.addCarToResult({
+        indexNumber,
+        time,
+        type: car.type
+    }));
 }
 
 export default rootReducer

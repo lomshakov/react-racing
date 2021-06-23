@@ -4,7 +4,7 @@ import {Button, Grid, TextField} from "@material-ui/core";
 import {AutoCars} from "../CarsTable/AutoCars";
 import {RacingTrack} from "../RacingTrack/RacingTrack";
 import {useDispatch, useSelector} from "react-redux";
-import {actions} from '../../redux/rootReducer'
+import {actions, startRace} from '../../redux/rootReducer'
 import {getCarsSelector, getIsStartedSelector, getTrackLengthSelector} from "../../redux/rootSelectors";
 import {Auto, CarType, Moto, Truck} from "../../types/types";
 import {MotoCars} from "../CarsTable/MotoCars";
@@ -31,18 +31,15 @@ const Form = styled.form`
 `;
 
 export const RacingPage:React.FC = () => {
-    const [raceLength, setRaceLength] = useState(0);
     const dispatch = useDispatch();
-    let history = useHistory();
+    const history = useHistory();
+    const [raceLength, setRaceLength] = useState(0);
     const cars = useSelector(getCarsSelector);
     const isStarted = useSelector(getIsStartedSelector);
     const length = useSelector(getTrackLengthSelector);
 
-    const startRace = () => {
-        dispatch(actions.setRaceState(true));
-        dispatch(actions.setFinishState(false));
-        dispatch(actions.setIsFinishedToAllCars(false));
-        dispatch(actions.setClearResults());
+    const startHandler = () => {
+        dispatch(startRace());
     }
 
     const handleChange = (e: React.FormEvent<EventTarget>) => {
@@ -54,17 +51,11 @@ export const RacingPage:React.FC = () => {
         dispatch(actions.setRaceLength(raceLength));
     }
 
-    const openSettings = () => {
-        history.push('/settings')
-    }
-
     return (
         <div>
             <Container container spacing={2}>
                 <Grid item xs={12}>
-                    <Title>
-                        Участники гонки:
-                    </Title>
+                    <Title>Участники гонки:</Title>
 
                     <Grid container justify="center" spacing={2}>
                         <Grid item>
@@ -79,7 +70,7 @@ export const RacingPage:React.FC = () => {
                     </Grid>
 
                     <SettingsBlock>
-                        <Button variant="contained" size="medium" color="secondary" onClick={openSettings}>Настройка</Button>
+                        <Button variant="contained" size="medium" color="secondary" onClick={() => history.push('/settings')}>Настройка</Button>
                         <Form noValidate autoComplete="off">
                             <TextField
                                 label="Длина трека"
@@ -92,13 +83,11 @@ export const RacingPage:React.FC = () => {
                         </Form>
                     </SettingsBlock>
 
-
-                    <Button variant="contained" size="large" color="primary" onClick={startRace} disabled={isStarted}>
+                    <Button variant="contained" size="large" color="primary" onClick={startHandler} disabled={isStarted}>
                         Старт
                     </Button>
 
                     <RacingTrack />
-
                 </Grid>
             </Container>
         </div>

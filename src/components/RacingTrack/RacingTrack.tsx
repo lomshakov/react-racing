@@ -34,15 +34,11 @@ export const RacingTrack:React.FC = () => {
             return element.isFinished
         })
         allCars && allCarsFinished && dispatch(actions.setFinishState(allCarsFinished))
-    }, [allCars, dispatch])
+    }, [allCars, dispatch]);
 
     useEffect(() => {
         isFinished && dispatch(actions.setRaceState(false))
-    }, [isFinished, dispatch])
-
-    const openResult = () => {
-        history.push('/result')
-    }
+    }, [isFinished, dispatch]);
 
     return (
         <Container>
@@ -53,9 +49,10 @@ export const RacingTrack:React.FC = () => {
             )}
 
             {isFinished &&
-                <ResultButton variant="outlined" size="large" onClick={openResult}>
+                <ResultButton variant="outlined" size="large" onClick={() => history.push('/result')}>
                     Результат заезда
-                </ResultButton>}
+                </ResultButton>
+            }
         </Container>
     )
 }
